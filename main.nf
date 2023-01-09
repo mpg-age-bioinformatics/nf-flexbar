@@ -48,7 +48,7 @@ process flexbar {
   script:
     """
     mkdir -p /workdir/flexbar_output
-    flexbar -r /raw_data/${f} -n ${task.cpus} -t /workdir/flexbar_output -q TAIL -qf i1.8
+    flexbar -r /raw_data/${f} -n ${task.cpus} -t /workdir/flexbar_output/${f} -q TAIL -qf i1.8
     """
 }
 
