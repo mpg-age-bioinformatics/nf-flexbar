@@ -60,6 +60,6 @@ workflow images {
 
 
 workflow {
-    data = channel.fromPath( "${params.flexbar_raw_data}/i*fastq.gz" )
+    data = channel.fromPath( "${params.flexbar_raw_data}/*fastq.gz" )
     flexbar(data)
 }
