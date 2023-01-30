@@ -10,46 +10,106 @@ process get_images {
     """
 
     if [[ "${params.run_type}" == "r2d2" ]] || [[ "${params.run_type}" == "raven" ]] ; 
-
       then
-
         cd ${params.image_folder}
-
         if [[ ! -f flexbar-3.5.sif ]] ;
           then
             singularity pull flexbar-3.5.sif docker://index.docker.io/mpgagebioinformatics/flexbar:3.5
+        fi
+        if [[ ! -f fastqc-0.11.9.sif ]] ;
+          then
+            singularity pull fastqc-0.11.9.sif docker://index.docker.io/mpgagebioinformatics/fastqc:0.11.9
         fi
 
     fi
 
 
     if [[ "${params.run_type}" == "local" ]] ; 
-
       then
-
         docker pull mpgagebioinformatics/flexbar:3.5
-
+        docker pull mpgagebioinformatics/fastqc:0.11.9
+        
     fi
 
     """
 
 }
 
-
-
-process flexbar {
-  tag "${f}"
+process get_quality {
   stageInMode 'symlink'
   stageOutMode 'move'
   
   input:
     path f
   
+  output:
+    env fqformat 
+  
   script:
+  """
+    ls
+    echo "\$PWD"
+    cd ${f}
+    readlink -f ./
+    echo "ccc"
+    qual_zip_file="\$(ls *.zip |head -n 1)"
+    if [[ ! -e "\${qual_zip_file%.zip}/fastq_qual.txt" ]] ; then
+      unzip -o "\$qual_zip_file"
+      cd "\${qual_zip_file%.zip}"
+      fastq_qual="\$(grep 'Encoding' fastqc_data.txt)"
+      if [[ "\${fastq_qual}" == *"Sanger"* ]] ; then
+        echo sanger > fastq_qual.txt
+      else 
+        echo undefined > fastq_qual.txt
+      fi
+      cd ..
+    fi
+    tempfolder=${params.project_folder}/${f}/"\${qual_zip_file%.zip}"
+    echo \$PWD
+    readlink -f ./
+    cd ..
+    #cd /workdir
+    ls
+    echo \$PWD
+    fqformat="\$(cat \${tempfolder}/fastq_qual.txt)"
+
+    if [[ "\${fqformat}" != "sanger" ]] ; then
+      echo "ERROR unexpected flexbar_quality, please check \${qual_zip_file%.zip}/fastqc_data.txt for Encoding"
+      exit
+    fi
+  """
+}
+
+
+process flexbar_trim {
+  stageInMode 'symlink'
+  stageOutMode 'move'
+
+  input:
+    tuple val(pair_id), path(fastq)
+    val fqformat
+
+  output:
+    val pair_id
+
+  //when:
+  //  ( ! file("${params.project_folder}/trimmed_raw/${pair_id}.fastq.gz").exists() )
+  //  ( ( ! file("${params.project_folder}/trimmed_raw/${pair_id}.fastq.gz").exists()  ) OR ( ! file("${params.project_folder}/trimmed_raw/${pair_id}_1.fastq.gz").exists() ) )
+  script:
+  def single = fastq instanceof Path
+
+  if ( single ) {
     """
-    mkdir -p /workdir/flexbar_output
-    flexbar -r /raw_data/${f} -n ${task.cpus} -t /workdir/flexbar_output/${f} -q TAIL -qf i1.8
+      mkdir -p /workdir/trimmed_raw
+      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${fqformat[0]}" -qt 25 -u 5
     """
+  } 
+  else { 
+    """
+      mkdir -p /workdir/trimmed_raw
+      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -p ${pair_id}${params.read2_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${fqformat[0]}" -qt 25 -u 5
+    """
+  }
 }
 
 
@@ -59,7 +119,30 @@ workflow images {
 }
 
 
-workflow {
-    data = channel.fromPath( "${params.flexbar_raw_data}/*fastq.gz" )
-    flexbar(data)
+workflow flexbar {
+  main:
+    // Channel
+    //   .fromFilePairs( "${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz", size: -1 )
+    //   .ifEmpty { error "Cannot find any reads matching: ${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz" }
+    //   .set { read_files }
+    read_files=Channel.fromFilePairs( "${params.flexbar_raw_data}/*${params.read12_sufix}", size: -1 )
+
+    if ( 'fqformat' in params.keySet() ) {
+      fqformat="${params.fqformat}"
+      flexbar_trim( read_files, fqformat )
+    } else {
+      if ( 'fastqc' in params.keySet() ) {
+        // copy the file from a non mounted location to a location that will be mount 
+        // either in docker with -v or singularity with -B
+        get_quality( "${params.fastqc}" )
+        // get_quality.out.collect().view()
+        flexbar_trim( read_files, get_quality.out.collect() )
+      } else {
+        printf("You need to either use the fqf or the fastqc argument so that quality encoding can be detected." )
+        exit
+      }
+    }      
+
+
+    
 }
