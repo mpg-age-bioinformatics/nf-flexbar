@@ -47,36 +47,34 @@ process get_quality {
   
   script:
   """
-    ls
-    echo "\$PWD"
-    cd ${f}
-    readlink -f ./
-    echo "ccc"
-    qual_zip_file="\$(ls *.zip |head -n 1)"
+
+    TASK_DIR=\$(pwd)
+
+    f=\$(readlink -f ${f})
+    cd \$f
+    qual_zip_file=\$(ls *.zip |head -n 1)
     if [[ ! -e "\${qual_zip_file%.zip}/fastq_qual.txt" ]] ; then
-      unzip -o "\$qual_zip_file"
-      cd "\${qual_zip_file%.zip}"
-      fastq_qual="\$(grep 'Encoding' fastqc_data.txt)"
+      unzip -o \$qual_zip_file
+      cd \${qual_zip_file%.zip}
+      fastq_qual=\$(grep 'Encoding' fastqc_data.txt)
       if [[ "\${fastq_qual}" == *"Sanger"* ]] ; then
         echo sanger > fastq_qual.txt
       else 
         echo undefined > fastq_qual.txt
       fi
-      cd ..
     fi
-    tempfolder=${params.project_folder}/${f}/"\${qual_zip_file%.zip}"
-    echo \$PWD
-    readlink -f ./
-    cd ..
-    #cd /workdir
-    ls
-    echo \$PWD
-    fqformat="\$(cat \${tempfolder}/fastq_qual.txt)"
+    
+    cd \$f
+    tempfolder=\${qual_zip_file%.zip}
+    fqformat=\$(cat \${tempfolder}/fastq_qual.txt)
 
     if [[ "\${fqformat}" != "sanger" ]] ; then
       echo "ERROR unexpected flexbar_quality, please check \${qual_zip_file%.zip}/fastqc_data.txt for Encoding"
       exit
     fi
+
+    cd \$TASK_DIR   #so that .command.env generated in the right folder
+
   """
 }
 
