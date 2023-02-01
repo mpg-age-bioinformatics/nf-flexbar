@@ -117,7 +117,7 @@ workflow images {
 }
 
 
-workflow flexbar {
+workflow {
   main:
     // Channel
     //   .fromFilePairs( "${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz", size: -1 )
@@ -129,14 +129,14 @@ workflow flexbar {
       fqformat="${params.fqformat}"
       flexbar_trim( read_files, fqformat )
     } else {
-      if ( 'fastqc' in params.keySet() ) {
+      if ( 'fastqc_output' in params.keySet() ) {
         // copy the file from a non mounted location to a location that will be mount 
         // either in docker with -v or singularity with -B
-        get_quality( "${params.fastqc}" )
+        get_quality( "${params.fastqc_output}" )
         // get_quality.out.collect().view()
         flexbar_trim( read_files, get_quality.out.collect() )
       } else {
-        printf("You need to either use the fqf or the fastqc argument so that quality encoding can be detected." )
+        printf("You need to either use the fqformat or the fastqc_output argument so that quality encoding can be detected." )
         exit
       }
     }      
