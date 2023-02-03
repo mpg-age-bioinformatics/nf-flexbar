@@ -140,7 +140,7 @@ workflow {
       if ( 'fastqc_output' in params.keySet() ) {
         // copy the file from a non mounted location to a location that will be mount 
         // either in docker with -v or singularity with -B
-        get_quality( "${params.fastqc_output}" )
+        get_quality( "${params.project_folder}/${params.fastqc_output}" )
         // get_quality.out.collect().view()
         flexbar_trim( read_files, get_quality.out.collect() )
       } else {
