@@ -90,9 +90,10 @@ process flexbar_trim {
   output:
     val pair_id
 
-  //when:
+  when:
   //  ( ! file("${params.project_folder}/trimmed_raw/${pair_id}.fastq.gz").exists() )
-  //  ( ( ! file("${params.project_folder}/trimmed_raw/${pair_id}.fastq.gz").exists()  ) OR ( ! file("${params.project_folder}/trimmed_raw/${pair_id}_1.fastq.gz").exists() ) )
+    ( ( ! file("${params.project_folder}/trimmed_raw/${pair_id}.fastq.gz").exists()  ) & ( ! file("${params.project_folder}/trimmed_raw/${pair_id}_1.fastq.gz").exists() ) )
+  
   script:
   def single = fastq instanceof Path
 
@@ -124,6 +125,7 @@ workflow {
     //   .ifEmpty { error "Cannot find any reads matching: ${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz" }
     //   .set { read_files }
     read_files=Channel.fromFilePairs( "${params.flexbar_raw_data}/*${params.read12_sufix}", size: -1 )
+    // read_files.view()
 
     if ( 'fqformat' in params.keySet() ) {
       fqformat="${params.fqformat}"
@@ -139,8 +141,5 @@ workflow {
         printf("You need to either use the fqformat or the fastqc_output argument so that quality encoding can be detected." )
         exit
       }
-    }      
-
-
-    
+    }          
 }
