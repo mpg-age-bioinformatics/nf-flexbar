@@ -57,7 +57,13 @@ process get_quality {
       unzip -o \$qual_zip_file
       cd \${qual_zip_file%.zip}
       fastq_qual=\$(grep 'Encoding' fastqc_data.txt)
-      if [[ "\${fastq_qual}" == *"Sanger"* ]] ; then
+      if [[ "\${fastq_qual}" == *"1.8"* ]] ; then
+        echo i1.8 > fastq_qual.txt
+      elif [[ "\${fastq_qual}" == *"1.5"* ]] ; then
+        echo i1.5 > fastq_qual.txt
+      elif [[ "\${fastq_qual}" == *"1.3"* ]] ; then
+        echo i1.3 > fastq_qual.txt
+      elif [[ "\${fastq_qual}" == *"Sanger"* ]] ; then
         echo sanger > fastq_qual.txt
       else 
         echo undefined > fastq_qual.txt
@@ -68,7 +74,7 @@ process get_quality {
     tempfolder=\${qual_zip_file%.zip}
     fqformat=\$(cat \${tempfolder}/fastq_qual.txt)
 
-    if [[ "\${fqformat}" != "sanger" ]] ; then
+    if [[ "\${fqformat}" == "undefined" ]] ; then
       echo "ERROR unexpected flexbar_quality, please check \${qual_zip_file%.zip}/fastqc_data.txt for Encoding"
       exit
     fi
@@ -139,7 +145,7 @@ workflow {
         flexbar_trim( read_files, get_quality.out.collect() )
       } else {
         printf("You need to either use the fqformat or the fastqc_output argument so that quality encoding can be detected." )
-        exit
+        // exit
       }
     }          
 }
