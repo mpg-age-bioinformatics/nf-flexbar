@@ -43,7 +43,7 @@ process get_quality {
     path f
   
   output:
-    env fqformat 
+    env quality_score_format 
   
   script:
   """
@@ -72,9 +72,9 @@ process get_quality {
     
     cd \$f
     tempfolder=\${qual_zip_file%.zip}
-    fqformat=\$(cat \${tempfolder}/fastq_qual.txt)
+    quality_score_format=\$(cat \${tempfolder}/fastq_qual.txt)
 
-    if [[ "\${fqformat}" == "undefined" ]] ; then
+    if [[ "\${quality_score_format}" == "undefined" ]] ; then
       echo "ERROR unexpected flexbar_quality, please check \${qual_zip_file%.zip}/fastqc_data.txt for Encoding"
       exit
     fi
@@ -91,7 +91,7 @@ process flexbar_trim {
 
   input:
     tuple val(pair_id), path(fastq)
-    val fqformat
+    val quality_format
 
   output:
     val pair_id
@@ -106,13 +106,13 @@ process flexbar_trim {
   if ( single ) {
     """
       mkdir -p /workdir/trimmed_raw
-      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${fqformat[0]}" -qt 25 -u 5
+      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${quality_format[0]}" -qt 25 -u 5
     """
   } 
   else { 
     """
       mkdir -p /workdir/trimmed_raw
-      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -p ${pair_id}${params.read2_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${fqformat[0]}" -qt 25 -u 5
+      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -p ${pair_id}${params.read2_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${quality_format[0]}" -qt 25 -u 5
     """
   }
 }
@@ -133,18 +133,18 @@ workflow {
     read_files=Channel.fromFilePairs( "${params.flexbar_raw_data}/*${params.read12_sufix}", size: -1 )
     // read_files.view()
 
-    if ( 'fqformat' in params.keySet() ) {
-      fqformat="${params.fqformat}"
-      flexbar_trim( read_files, fqformat )
+    if ( 'quality_score_format' in params.keySet() ) {
+      quality_format=["${params.quality_score_format}"]
+      flexbar_trim( read_files, quality_format )
     } else {
       if ( 'fastqc_output' in params.keySet() ) {
         // copy the file from a non mounted location to a location that will be mount 
         // either in docker with -v or singularity with -B
-        get_quality( "${params.project_folder}/${params.fastqc_output}" )
+        get_quality( "${params.fastqc_output}" )
         // get_quality.out.collect().view()
         flexbar_trim( read_files, get_quality.out.collect() )
       } else {
-        printf("You need to either use the fqformat or the fastqc_output argument so that quality encoding can be detected." )
+        printf("You need to either use the quality_score_format or the fastqc_output argument so that quality encoding can be detected." )
         // exit
       }
     }          

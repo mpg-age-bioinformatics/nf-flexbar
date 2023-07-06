@@ -3,7 +3,8 @@
   "flexbar_raw_data" : "/Users/YWang/nf/nf-flexbar-test/raw_data" ,
   "fastqc_output": "/Users/YWang/nf/nf-flexbar-test/fastqc_output" ,
   "adapter_seq" : "CTGTCTCTTATACACATCT",
-  "read1_sufix" : "_R1.fastq.gz",
-  "read2_sufix" : "_R2.fastq.gz",
-  "read12_sufix" : "_R{1,2}.fastq.gz"
+  "read1_sufix" : ".READ_1.fastq.gz",
+  "read2_sufix" : ".READ_2.fastq.gz",
+  "read12_sufix" : "READ_{1,2}.fastq.gz",
+  "quality_score_format" : "sanger"
 }
