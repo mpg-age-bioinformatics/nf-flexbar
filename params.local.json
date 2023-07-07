@@ -5,5 +5,5 @@
   "adapter_seq" : "CTGTCTCTTATACACATCT",
   "read1_sufix" : ".READ_1.fastq.gz",
   "read2_sufix" : ".READ_2.fastq.gz",
-  "read12_sufix" : "READ_{1,2}.fastq.gz"
+  "read12_sufix" : ".READ_{1,2}.fastq.gz"
 }
