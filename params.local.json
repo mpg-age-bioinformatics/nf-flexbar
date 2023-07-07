@@ -1,10 +1,9 @@
 { 
   "project_folder" : "/Users/YWang/nf/nf-flexbar-test" ,
-  "flexbar_raw_data" : "/Users/YWang/nf/nf-flexbar-test/raw_data" ,
+  "raw_data" : "/Users/YWang/nf/nf-flexbar-test/raw_data" ,
   "fastqc_output": "/Users/YWang/nf/nf-flexbar-test/fastqc_output" ,
   "adapter_seq" : "CTGTCTCTTATACACATCT",
   "read1_sufix" : ".READ_1.fastq.gz",
   "read2_sufix" : ".READ_2.fastq.gz",
-  "read12_sufix" : "READ_{1,2}.fastq.gz",
-  "quality_score_format" : "sanger"
+  "read12_sufix" : "READ_{1,2}.fastq.gz"
 }
