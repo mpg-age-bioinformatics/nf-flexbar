@@ -27,14 +27,14 @@ Run the workflow:
 fastqc
 ```
 PROFILE=raven
-nextflow run ~/nf/nf-fastqc -params-file params.json -entry images -profile ${PROFILE} 
-nextflow run ~/nf/nf-fastqc -params-file params.json -profile ${PROFILE}
+nextflow run nf-fastqc -params-file params.json -entry images -profile ${PROFILE} 
+nextflow run nf-fastqc -params-file params.json -profile ${PROFILE}
 ```
 
 flexbar trimming
 ```
-nextflow run ~/nf/nf-flexbar -params-file params.json -entry images -profile ${PROFILE} 
-nextflow run ~/nf/nf-flexbar -params-file params.json -profile ${PROFILE}
+nextflow run nf-flexbar -params-file params.json -entry images -profile ${PROFILE} 
+nextflow run nf-flexbar -params-file params.json -profile ${PROFILE}
 ```
 
 ## Contributing

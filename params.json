@@ -1,7 +1,0 @@
-{ 
-  "project_folder" : "/raven/u/wangy/nf_atacseq_test" ,
-  "fastqc_raw_data" : "/raven/u/wangy/nf_atacseq_test/raw_data" ,
-	"flexbar_raw_data" : "/raven/u/wangy/nf_atacseq_test/raw_data" ,
-  "fastqc_output_flexbar": "/raven/u/wangy/nf_atacseq_test/fastqc_output" ,
-  "adapter_seq" : "CTGTCTCTTATACACATCT"
-}
