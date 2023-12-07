@@ -1,0 +1,7 @@
+{ 
+  "project_folder" : "~/nf_atacseq_test" ,
+  "fastqc_raw_data" : "~/nf_atacseq_test/raw_data" ,
+	"flexbar_raw_data" : "~/nf_atacseq_test/raw_data" ,
+  "fastqc_output": "~/nf_atacseq_test/fastqc_output" ,
+  "adapter_seq" : "CTGTCTCTTATACACATCT"
+}

@@ -106,13 +106,13 @@ process flexbar_trim {
   if ( single ) {
     """
       mkdir -p /workdir/trimmed_raw
-      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${quality_format[0]}" -qt 25 -u 5
+      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}.READ_1.fastq.gz -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${quality_format[0]}" -qt 25 -u 5
     """
   } 
   else { 
     """
       mkdir -p /workdir/trimmed_raw
-      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}${params.read1_sufix} -p ${pair_id}${params.read2_sufix} -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${quality_format[0]}" -qt 25 -u 5
+      flexbar  -n ${task.cpus} -ae 0.2 -ac ON  -r /raw_data/${pair_id}.READ_1.fastq.gz -p ${pair_id}.READ_2.fastq.gz -t /workdir/trimmed_raw/${pair_id} -z GZ -q TAIL -qf "${quality_format[0]}" -qt 25 -u 5
     """
   }
 }
@@ -130,9 +130,8 @@ workflow {
     //   .fromFilePairs( "${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz", size: -1 )
     //   .ifEmpty { error "Cannot find any reads matching: ${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz" }
     //   .set { read_files }
-    read_files=Channel.fromFilePairs( "${params.raw_data}/*${params.read12_sufix}", size: -1 )
-    // read_files.view()
-
+    read_files=Channel.fromFilePairs( "${params.raw_data}/*.READ_{1,2}.fastq.gz", size: -1 )
+    read_files.view()
     if ( 'quality_score_format' in params.keySet() ) {
       quality_format=["${params.quality_score_format}"]
       flexbar_trim( read_files, quality_format )

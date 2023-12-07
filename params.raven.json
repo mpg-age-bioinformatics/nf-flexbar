@@ -2,8 +2,5 @@
   "project_folder" : "/raven/u/wangy/nf/nf-flexbar-test" ,
 	"flexbar_raw_data" : "/raven/u/wangy/nf/nf-flexbar-test/raw_data" ,
   "fastqc_output": "/raven/u/wangy/nf/nf-flexbar-test/fastqc_output" ,
-  "adapter_seq" : "CTGTCTCTTATACACATCT",
-  "read1_sufix" : "_R1.fastq.gz",
-  "read2_sufix" : "_R2.fastq.gz",
-  "read12_sufix" : "_R{1,2}.fastq.gz"
+  "adapter_seq" : "CTGTCTCTTATACACATCT"
 }
