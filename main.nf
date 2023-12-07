@@ -130,20 +130,20 @@ workflow {
     //   .fromFilePairs( "${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz", size: -1 )
     //   .ifEmpty { error "Cannot find any reads matching: ${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz" }
     //   .set { read_files }
-    read_files=Channel.fromFilePairs( "${params.raw_data}/*.READ_{1,2}.fastq.gz", size: -1 )
+    read_files=Channel.fromFilePairs( "${params.flexbar_raw_data}/*.READ_{1,2}.fastq.gz", size: -1 )
     read_files.view()
     if ( 'quality_score_format' in params.keySet() ) {
       quality_format=["${params.quality_score_format}"]
       flexbar_trim( read_files, quality_format )
     } else {
-      if ( 'fastqc_output' in params.keySet() ) {
+      if ( 'fastqc_output_flexbar' in params.keySet() ) {
         // copy the file from a non mounted location to a location that will be mount 
         // either in docker with -v or singularity with -B
-        get_quality( "${params.fastqc_output}" )
+        get_quality( "${params.fastqc_output_flexbar}" )
         // get_quality.out.collect().view()
         flexbar_trim( read_files, get_quality.out.collect() )
       } else {
-        printf("You need to either use the quality_score_format or the fastqc_output argument so that quality encoding can be detected." )
+        printf("You need to either use the quality_score_format or the fastqc_output_flexbar argument so that quality encoding can be detected." )
         // exit
       }
     }          

@@ -19,12 +19,22 @@ cd ~/nf_atacseq_test
 curl -J -O https://raw.githubusercontent.com/mpg-age-bioinformatics/nf-flexbar/main/params.json
 ```
 
+Change the parameters in params.json accordingly, e.g. change "project_folder" : "/raven/u/wangy/nf_atacseq_test/" to "project_folder" : Users/YOURNAME/nf-flexbar-test/"
+
 
 Run the workflow:
+
+fastqc
 ```
 PROFILE=raven
-nextflow run mpg-age-bioinformatics/nf-flexbar clone -params-file params.json -entry images -profile ${PROFILE} 
-nextflow run mpg-age-bioinformatics/nf-flexbar clone ${RELEASE} -params-file params.json -profile ${PROFILE}
+nextflow run ~/nf/nf-fastqc -params-file params.json -entry images -profile ${PROFILE} 
+nextflow run ~/nf/nf-fastqc -params-file params.json -profile ${PROFILE}
+```
+
+flexbar trimming
+```
+nextflow run ~/nf/nf-flexbar -params-file params.json -entry images -profile ${PROFILE} 
+nextflow run ~/nf/nf-flexbar -params-file params.json -profile ${PROFILE}
 ```
 
 ## Contributing
