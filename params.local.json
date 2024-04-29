@@ -1,9 +1,6 @@
 { 
-  "project_folder" : "/Users/YWang/nf/nf-flexbar-test" ,
-  "raw_data" : "/Users/YWang/nf/nf-flexbar-test/raw_data" ,
-  "fastqc_output": "/Users/YWang/nf/nf-flexbar-test/fastqc_output" ,
-  "adapter_seq" : "CTGTCTCTTATACACATCT",
-  "read1_sufix" : ".READ_1.fastq.gz",
-  "read2_sufix" : ".READ_2.fastq.gz",
-  "read12_sufix" : ".READ_{1,2}.fastq.gz"
+  "project_folder" : "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test" ,
+  "raw_data" : "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test/raw_data" ,
+  "fastqc_output": "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test/fastqc_output" ,
+  "adapter_seq" : "CTGTCTCTTATACACATCT"
 }
