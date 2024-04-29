@@ -1,6 +1,7 @@
 { 
   "project_folder" : "/raven/u/wangy/nf/nf-flexbar-test" ,
 	"flexbar_raw_data" : "/raven/u/wangy/nf/nf-flexbar-test/raw_data" ,
-  "fastqc_output": "/raven/u/wangy/nf/nf-flexbar-test/fastqc_output" ,
+  "fastqc_raw_data": "/raven/u/wangy/nf/nf-flexbar-test/raw_data" ,
+  "fastqc_output_flexbar": "/raven/u/wangy/nf_flexbar_test/fastqc_output" ,
   "adapter_seq" : "CTGTCTCTTATACACATCT"
 }
