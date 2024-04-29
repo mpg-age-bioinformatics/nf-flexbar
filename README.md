@@ -2,12 +2,13 @@
 
 Create the test directory:
 ```
-mkdir -p ~/nf_atacseq_test/raw_data
+mkdir -p /tmp/nextflow_atac_loacal_test
 ```
 
 Download the demo data:
 ```
-cd ~/nf_atacseq_test/raw_data
+mkdir -p /tmp/nextflow_atac_loacal_test/raw_data
+cd /tmp/nextflow_atac_loacal_test/raw_data
 curl -J -O https://datashare.mpcdf.mpg.de/s/ACJ6T5TVTcvR6fm/download
 curl -J -O https://datashare.mpcdf.mpg.de/s/ktjFjaIcLP3lEw0/download
 
@@ -15,26 +16,24 @@ curl -J -O https://datashare.mpcdf.mpg.de/s/ktjFjaIcLP3lEw0/download
 
 Download the paramaters file:
 ```
-cd ~/nf_atacseq_test
+cd /tmp/nextflow_atac_loacal_test
 curl -J -O https://raw.githubusercontent.com/mpg-age-bioinformatics/nf-flexbar/main/params.local.json
 ```
 
-Change the parameters in params.json accordingly, e.g. change "project_folder" : "/raven/u/wangy/nf_atacseq_test/" to "project_folder" : Users/YOURNAME/nf-flexbar-test/"
 
-
-Run the workflow:
+Run the workflow locally:
 
 fastqc
 ```
 PARAMS=params.local.json
-nextflow run nf-fastqc -params-file params.local.json -entry images  --user "$(id -u):$(id -g)"  
-nextflow run nf-fastqc -params-file params.json --user "$(id -u):$(id -g)"
+nextflow run nf-fastqc -params-file params.local.json -entry images --user "$(id -u):$(id -g)"  
+nextflow run nf-fastqc -params-file params.local.json --user "$(id -u):$(id -g)"
 ```
 
 flexbar trimming
 ```
-nextflow run nf-flexbar -params-file params.json -entry images -profile ${PROFILE} 
-nextflow run nf-flexbar -params-file params.json -profile ${PROFILE}
+nextflow run nf-flexbar -params-file params.local.json -entry images --user "$(id -u):$(id -g)"
+nextflow run nf-flexbar -params-file params.local.json --user "$(id -u):$(id -g)"
 ```
 
 ## Contributing
