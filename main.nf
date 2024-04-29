@@ -131,7 +131,6 @@ workflow {
     //   .ifEmpty { error "Cannot find any reads matching: ${params.kallisto_raw_data}*.READ_{1,2}.fastq.gz" }
     //   .set { read_files }
     read_files=Channel.fromFilePairs( "${params.flexbar_raw_data}/*.READ_{1,2}.fastq.gz", size: -1 )
-    read_files.view()
     if ( 'quality_score_format' in params.keySet() ) {
       quality_format=["${params.quality_score_format}"]
       flexbar_trim( read_files, quality_format )
