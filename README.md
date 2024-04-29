@@ -33,7 +33,7 @@ nextflow run  mpg-age-bioinformatics/nf-fastqc -r ${RELEASE} -params-file params
 
 flexbar trimming
 ```
-RELEASE=1.0.0
+RELEASE=1.1.0
 nextflow run  mpg-age-bioinformatics/nf-flexbar -r ${RELEASE} -params-file params.local.json -entry images --user "$(id -u):$(id -g)"
 nextflow run  mpg-age-bioinformatics/nf-flexbar -r ${RELEASE} -params-file params.local.json --user "$(id -u):$(id -g)"
 ```
