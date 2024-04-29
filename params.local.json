@@ -3,5 +3,6 @@
   "flexbar_raw_data" : "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test/raw_data" ,
   "fastqc_raw_data": "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test/raw_data" ,
   "fastqc_output_flexbar": "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test/fastqc_output" ,
+  "fastqc_output": "/nexus/posix0/MAGE-flaski/service/posit/home/wangy/nextflow_atac_loacal_test/fastqc_output" ,
   "adapter_seq" : "CTGTCTCTTATACACATCT"
 }
