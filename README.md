@@ -2,13 +2,13 @@
 
 Create the test directory:
 ```
-mkdir -p /tmp/nextflow_atac_loacal_test
+mkdir -p /tmp/nextflow_atac_local_test
 ```
 
 Download the demo data:
 ```
-mkdir -p /tmp/nextflow_atac_loacal_test/raw_data
-cd /tmp/nextflow_atac_loacal_test/raw_data
+mkdir -p /tmp/nextflow_atac_local_test/raw_data
+cd /tmp/nextflow_atac_local_test/raw_data
 curl -J -O https://datashare.mpcdf.mpg.de/s/ACJ6T5TVTcvR6fm/download
 curl -J -O https://datashare.mpcdf.mpg.de/s/ktjFjaIcLP3lEw0/download
 
@@ -16,7 +16,7 @@ curl -J -O https://datashare.mpcdf.mpg.de/s/ktjFjaIcLP3lEw0/download
 
 Download the paramaters file:
 ```
-cd /tmp/nextflow_atac_loacal_test
+cd /tmp/nextflow_atac_local_test
 curl -J -O https://raw.githubusercontent.com/mpg-age-bioinformatics/nf-flexbar/main/params.local.json
 ```
 
