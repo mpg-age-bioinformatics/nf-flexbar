@@ -27,15 +27,15 @@ fastqc
 ```
 RELEASE=1.1.1
 PARAMS=params.local.json
-nextflow run  mpg-age-bioinformatics/nf-fastqc -r ${RELEASE} -params-file params.local.json -entry images --user "$(id -u):$(id -g)"  
-nextflow run  mpg-age-bioinformatics/nf-fastqc -r ${RELEASE} -params-file params.local.json --user "$(id -u):$(id -g)"
+nextflow run  mpg-age-bioinformatics/nf-fastqc -r ${RELEASE} -params-file ${PARAMS} -entry images --user "$(id -u):$(id -g)"  
+nextflow run  mpg-age-bioinformatics/nf-fastqc -r ${RELEASE} -params-file ${PARAMS} --user "$(id -u):$(id -g)"
 ```
 
 flexbar trimming
 ```
 RELEASE=1.1.0
-nextflow run  mpg-age-bioinformatics/nf-flexbar -r ${RELEASE} -params-file params.local.json -entry images --user "$(id -u):$(id -g)"
-nextflow run  mpg-age-bioinformatics/nf-flexbar -r ${RELEASE} -params-file params.local.json --user "$(id -u):$(id -g)"
+nextflow run  mpg-age-bioinformatics/nf-flexbar -r ${RELEASE} -params-file ${PARAMS} -entry images --user "$(id -u):$(id -g)"
+nextflow run  mpg-age-bioinformatics/nf-flexbar -r ${RELEASE} -params-file ${PARAMS} --user "$(id -u):$(id -g)"
 ```
 
 ## Contributing
